@@ -1,0 +1,101 @@
+package backend.academy.mazegame.labyrinth.generator.impl;
+
+import backend.academy.mazegame.labyrinth.generator.MazeGenerator;
+import backend.academy.mazegame.maze.Maze;
+import backend.academy.mazegame.parameters.MazeSymbols;
+import backend.academy.mazegame.representation.impl.SimpleMazeRepresentation;
+import java.util.Random;
+
+public class SimpleMazeGenerator implements MazeGenerator {
+
+    private final Random random = new Random();
+    private int currentX;
+    private int currentY;
+    private char[][] maze;
+
+    @Override
+    public Maze generateMaze(int length) {
+        if (length < 3) {
+            throw new IllegalArgumentException("Maze length is at least 3. Your maze length: " + length);
+        }
+
+        maze = new char[length][length];
+
+        for (int x = 0; x < length; x++) {
+            for (int y = 0; y < length; y++) {
+                maze[y][x] = MazeSymbols.WALL.value();
+            }
+        }
+
+        //left, right, up, down
+        int[] dx = {-2, 2, 0, 0};
+        int[] dy = {0, 0, 2, -2};
+
+        int deletedWalls = 0;
+        setRandomCoordinates();
+
+        //number of points with both of its coordinates being even
+        //F.E. (2,2), (2,4), (4,4)
+        int wallsToDelete = ((length + 1) / 2) * ((length + 1) / 2);
+
+        SimpleMazeRepresentation representation = new SimpleMazeRepresentation();
+
+        wh:
+        while (deletedWalls < wallsToDelete) {
+
+            maze[currentY][currentX] = MazeSymbols.SPACE.value();
+            deletedWalls += 1;
+
+            //checking if we can't step nowhere
+            for (int i = 0; i < dx.length; i++) {
+                if (pointIsInBounds(currentX + dx[i], currentY + dy[i])) {
+                    if (maze[currentY + dy[i]][currentX + dx[i]] == MazeSymbols.WALL.value()) {
+                        break;
+                    }
+                }
+                if (i == dx.length - 1) {
+                    if (deletedWalls < wallsToDelete) {
+                        setRandomCoordinates();
+                    }
+                    continue wh;
+                }
+            }
+
+            //now we know we have somewhere to go, and we just pick it randomly
+            int dir, newX, newY;
+            do {
+                dir = random.nextInt(0, dx.length);
+                newX = currentX + dx[dir];
+                newY = currentY + dy[dir];
+            } while (!pointIsInBounds(newX, newY) || maze[newY][newX] == MazeSymbols.SPACE.value());
+
+            //making a way to (newX, newY)
+            maze[newY][newX] = MazeSymbols.SPACE.value();
+            //deleting a wall at the point we just 'jumped over'
+            maze[newY - dy[dir] / 2][newX - dx[dir] / 2] = MazeSymbols.SPACE.value();
+
+            currentX = newX;
+            currentY = newY;
+
+        }
+
+        return new Maze(maze);
+
+    }
+
+    private void setRandomCoordinates() {
+        do {
+            currentX = random.nextInt(0, maze.length - 1);
+            currentX += (currentX % 2);
+
+            currentY = random.nextInt(0, maze.length - 1);
+            currentY += (currentY % 2);
+        } while (maze[currentY][currentX] == MazeSymbols.SPACE.value());
+
+    }
+
+    private boolean pointIsInBounds(int x, int y) {
+        return (x >= 0 && x < maze.length) && (y >= 0 && y < maze.length);
+    }
+}
+

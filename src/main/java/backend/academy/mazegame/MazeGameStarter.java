@@ -8,6 +8,6 @@ public class MazeGameStarter {
     MazeGenerator mazeGenerator;
 
     void startGame() {
-        maze = mazeGenerator.generateMaze();
+
     }
 }
