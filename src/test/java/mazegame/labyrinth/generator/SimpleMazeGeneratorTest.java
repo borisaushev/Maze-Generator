@@ -29,6 +29,7 @@ public class SimpleMazeGeneratorTest {
             assertNotNull(m);
             assertNotNull(m.maze());
         });
+
         for (int i = -10; i < MIN_VALID_LENGTH; i++) {
             int finalI = i;
             assertThrows(IllegalArgumentException.class, () -> generator.generateMaze(finalI));

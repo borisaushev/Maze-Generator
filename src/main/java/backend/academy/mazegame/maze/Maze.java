@@ -12,7 +12,7 @@ public record Maze(char[][] maze) {
         if (x < 0 || x > maze().length || y < 0 || y > maze().length) {
             throw new IllegalArgumentException("Wrong coordinates x: %d \t y: %d".formatted(x, y));
         }
-        return maze[x][y];
+        return maze[y][x];
     }
 
     public char valueAt(Point point) {
