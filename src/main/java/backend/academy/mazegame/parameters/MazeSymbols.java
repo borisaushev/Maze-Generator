@@ -4,7 +4,8 @@ import lombok.Getter;
 
 @Getter public enum MazeSymbols {
     WALL('█'),
-    SPACE(' ');
+    SPACE(' '),
+    PATH('+');
 
     final char value;
 

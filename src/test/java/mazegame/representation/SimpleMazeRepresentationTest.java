@@ -9,17 +9,18 @@ public class SimpleMazeRepresentationTest {
     @Test
     public void simpleMazeTest() {
         Maze maze = new Maze(new char[][] {
-            {'■', ' ', '■'},
-            {'■', ' ', ' '},
-            {'■', '■', ' '}
+            {'█', ' ', '█'},
+            {'█', ' ', ' '},
+            {'█', ' ', '█'}
         });
 
         SimpleMazeRepresentation representation = new SimpleMazeRepresentation();
 
         String expected = """
-            |■| |■|
-            |■| | |
-            |■|■| |
+               0 1 2\s
+            0 |█| |█|
+            1 |█| | |
+            2 |█| |█|
             """;
         String result = representation.getMazeRepresentation(maze);
 

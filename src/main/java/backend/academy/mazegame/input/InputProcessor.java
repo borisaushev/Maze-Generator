@@ -1,7 +1,7 @@
 package backend.academy.mazegame.input;
 
-import backend.academy.mazegame.maze.Maze;
+import backend.academy.mazegame.parameters.GameParameters;
 
-public interface InputProcessor<InputType> {
-    void processInput(InputType input, Maze maze);
+public interface InputProcessor<T> {
+    void processInput(T input, GameParameters parameters);
 }

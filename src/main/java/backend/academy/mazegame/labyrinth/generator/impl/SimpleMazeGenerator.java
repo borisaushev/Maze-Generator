@@ -3,6 +3,7 @@ package backend.academy.mazegame.labyrinth.generator.impl;
 import backend.academy.mazegame.labyrinth.generator.MazeGenerator;
 import backend.academy.mazegame.maze.Maze;
 import backend.academy.mazegame.parameters.MazeSymbols;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.util.Random;
 
 /**
@@ -10,8 +11,10 @@ import java.util.Random;
  *
  * @see <a href="https://www.google.com/amp/s/habr.com/ru/amp/publications/318530/">source article</a>
  */
+@SuppressFBWarnings({"PREDICTABLE_RANDOM", "PL_PARALLEL_LISTS"})
 public class SimpleMazeGenerator implements MazeGenerator {
 
+    public static final int MIN_MAZE_LENGTH = 3;
     private final Random random = new Random();
 
     //change of values of x and y when we go: left, right, up, down
@@ -23,13 +26,15 @@ public class SimpleMazeGenerator implements MazeGenerator {
     private char[][] maze;
 
     /**
+     * Generates a Maze object based on a given length
+     *
      * @param length > 3 size of a labyrinth
      * @return Maze object
      * @throws IllegalArgumentException if <b>length</b> is less than 3
      */
     @Override
     public Maze generateMaze(int length) {
-        if (length < 3) {
+        if (length < MIN_MAZE_LENGTH) {
             throw new IllegalArgumentException("Maze length is at least 3. Your maze length: " + length);
         }
 
@@ -81,7 +86,9 @@ public class SimpleMazeGenerator implements MazeGenerator {
 
     private void makeNewRandomStep() {
         //now we know we have somewhere to go, and we just pick it randomly
-        int dir, newX, newY;
+        int dir;
+        int newX;
+        int newY;
         do {
             dir = random.nextInt(0, dx.length);
             newX = currentX + dx[dir];

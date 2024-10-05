@@ -1,5 +1,5 @@
 package backend.academy.mazegame.input;
 
-public interface InputSource<InputType> {
-    InputType getNextInput();
+public interface InputSource<T> {
+    T getNextInput();
 }

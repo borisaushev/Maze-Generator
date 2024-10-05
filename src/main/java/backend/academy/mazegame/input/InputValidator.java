@@ -1,5 +1,7 @@
 package backend.academy.mazegame.input;
 
-public interface InputValidator<InputType> {
-    boolean inputIsValid(InputType input);
+import backend.academy.mazegame.parameters.GameParameters;
+
+public interface InputValidator<T> {
+    boolean inputIsValid(T input, GameParameters gameParameters);
 }

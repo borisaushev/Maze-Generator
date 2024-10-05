@@ -13,8 +13,10 @@ import static backend.academy.mazegame.parameters.MazeSymbols.WALL;
 /**
  * Finds a way from one <b>Point</b> to another
  */
-public class SimpleMazePathFinder implements PathFinder<List<Point>> {
+public class SimpleMazePathFinder implements PathFinder {
     /**
+     * Finds and returns a path between 2 given points in a given maze
+     *
      * @param startingPoint starting point
      * @param endingPoint   ending point, can equal to starting point
      * @param maze          maze
@@ -39,11 +41,12 @@ public class SimpleMazePathFinder implements PathFinder<List<Point>> {
                 return reconstructPath(endingPoint, previousPoint);
             }
 
-            int x = currentPoint.x(), y = currentPoint.y();
+            int x = currentPoint.x();
+            int y = currentPoint.y();
             for (int i = 0; i < dx.length; i++) {
                 Point newPoint = new Point(x + dx[i], y + dy[i]);
                 if (pointIsInBounds(newPoint, maze)
-                    && visitedPoints.contains(newPoint) == Boolean.FALSE
+                    && !visitedPoints.contains(newPoint)
                     && maze.valueAt(newPoint) != WALL.value()) {
                     que.addLast(newPoint);
                     previousPoint.put(newPoint, currentPoint);
@@ -57,6 +60,9 @@ public class SimpleMazePathFinder implements PathFinder<List<Point>> {
     }
 
     /**
+     * Reconstructs and returns a path of Point object,
+     * based on an Ending point and a map of previous points to given ones
+     *
      * @param endingPoint   ending point, can equal to starting point
      * @param previousPoint map, where key is some point, and a value is a point that is previous to the key one
      * @return <b>Empty List</b> if no path was found, otherwise returns list of all points in any order
@@ -74,7 +80,8 @@ public class SimpleMazePathFinder implements PathFinder<List<Point>> {
     }
 
     private boolean pointIsInBounds(Point point, Maze maze) {
-        int x = point.x(), y = point.y();
+        int x = point.x();
+        int y = point.y();
         return (x >= 0 && x < maze.maze().length) && (y >= 0 && y < maze.maze().length);
     }
 
