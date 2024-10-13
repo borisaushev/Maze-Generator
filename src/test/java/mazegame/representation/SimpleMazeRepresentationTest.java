@@ -25,6 +25,5 @@ public class SimpleMazeRepresentationTest {
         String result = representation.getMazeRepresentation(maze);
 
         assertEquals(expected, result);
-
     }
 }

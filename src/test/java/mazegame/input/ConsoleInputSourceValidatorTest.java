@@ -62,5 +62,4 @@ public class ConsoleInputSourceValidatorTest {
 
         assertFalse(result);
     }
-
 }

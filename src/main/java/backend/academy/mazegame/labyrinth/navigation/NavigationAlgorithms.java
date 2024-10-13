@@ -1,10 +1,12 @@
 package backend.academy.mazegame.labyrinth.navigation;
 
-import backend.academy.mazegame.labyrinth.navigation.impl.SimpleMazePathFinder;
+import backend.academy.mazegame.labyrinth.navigation.impl.BFSMazePathFinder;
+import backend.academy.mazegame.labyrinth.navigation.impl.DFSMazePathFinder;
 import java.util.Map;
 
 public enum NavigationAlgorithms {
-    SIMPLE_PATH_FINDER(1, new SimpleMazePathFinder(), "Поиск в ширину");
+    BFS_PATH_FINDER(1, new BFSMazePathFinder(), "Поиск в ширину"),
+    DFS_PATH_FINDER(2, new DFSMazePathFinder(), "Поиск в глубину");
 
     public final PathFinder value;
     public final String description;
@@ -17,9 +19,9 @@ public enum NavigationAlgorithms {
     }
 
     public static PathFinder getAlgorithm(int input) {
-        //TODO: add new realization
         Map<Integer, PathFinder> type = Map.of(
-            1, SIMPLE_PATH_FINDER.value
+            1, BFS_PATH_FINDER.value,
+            2, DFS_PATH_FINDER.value
         );
         return type.get(input);
     }
@@ -27,10 +29,9 @@ public enum NavigationAlgorithms {
     public static String getAllNavigationAlgorithmsWithDescriptions() {
         StringBuilder result = new StringBuilder();
         for (NavigationAlgorithms algorithm : NavigationAlgorithms.values()) {
-            result.append(algorithm.correspondingInput).append(". ").append(algorithm.description);
+            result.append(algorithm.correspondingInput).append(". ")
+                .append(algorithm.description).append('\n');
         }
-
         return result.toString();
     }
-
 }

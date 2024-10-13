@@ -6,7 +6,6 @@ import java.util.Scanner;
 
 @SuppressFBWarnings("DM_DEFAULT_ENCODING")
 public class ConsoleInputSource implements InputSource<String> {
-
     private final Scanner scan = new Scanner(System.in);
 
     @Override

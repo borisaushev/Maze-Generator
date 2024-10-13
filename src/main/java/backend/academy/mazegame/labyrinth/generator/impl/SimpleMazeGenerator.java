@@ -11,77 +11,69 @@ import java.util.Random;
  *
  * @see <a href="https://www.google.com/amp/s/habr.com/ru/amp/publications/318530/">source article</a>
  */
-@SuppressFBWarnings({"PREDICTABLE_RANDOM", "PL_PARALLEL_LISTS"})
+@SuppressFBWarnings({"PREDICTABLE_RANDOM", "PL_PARALLEL_LISTS", "CLI_CONSTANT_LIST_INDEX"})
 public class SimpleMazeGenerator implements MazeGenerator {
-
-    public static final int MIN_MAZE_LENGTH = 3;
     private final Random random = new Random();
-
     //change of values of x and y when we go: left, right, up, down
     private final int[] dx = {-2, 2, 0, 0};
     private final int[] dy = {0, 0, 2, -2};
-
     private int currentX;
     private int currentY;
     private char[][] maze;
 
     /**
-     * Generates a Maze object based on a given length
+     * Generates a Maze object based on a given height and width
      *
-     * @param length > 3 size of a labyrinth
+     * @param height > MIN_MAZE_HEIGHT height of a labyrinth
+     * @param width  > MIN_MAZE_WIDTH width of a labyrinth
      * @return Maze object
-     * @throws IllegalArgumentException if <b>length</b> is less than 3
+     * @throws IllegalArgumentException if <b>height or width</b> is less than MIN_MAZE_HEIGHT and MIN_MAZE_WIDTH
      */
     @Override
-    public Maze generateMaze(int length) {
-        if (length < MIN_MAZE_LENGTH) {
-            throw new IllegalArgumentException("Maze length is at least 3. Your maze length: " + length);
+    public Maze generateMaze(int height, int width) {
+        if (!validateMazeParameters(height, width)) {
+            throw new IllegalArgumentException("height and width are supposed to be at least "
+                + Maze.MIN_MAZE_HEIGHT + " : " + Maze.MIN_MAZE_WIDTH);
         }
-
-        maze = new char[length][length];
-
-        for (int x = 0; x < length; x++) {
-            for (int y = 0; y < length; y++) {
-                maze[y][x] = MazeSymbols.WALL.value();
-            }
-        }
-
+        maze = new char[height][width];
+        clearMaze();
         int deletedWalls = 0;
         setRandomCoordinates();
 
         //number of points with both of its coordinates being even
-        //F.E. (2,2), (2,4), (4,4)
-        int wallsToDelete = ((length + 1) / 2) * ((length + 1) / 2);
-
+        //F.E. (1,1), (1,3), (3,3)
+        int wallsToDelete = (height / 2) * (width / 2);
         while (deletedWalls < wallsToDelete) {
-
-            maze[currentY][currentX] = MazeSymbols.SPACE.value();
+            maze[currentY][currentX] = MazeSymbols.SPACE.value;
             deletedWalls += 1;
 
             boolean cantJumpNowhere = true;
             //checking if we can't step nowhere
             for (int i = 0; i < dx.length; i++) {
                 if (pointIsInBounds(currentX + dx[i], currentY + dy[i])) {
-                    if (maze[currentY + dy[i]][currentX + dx[i]] == MazeSymbols.WALL.value()) {
+                    if (maze[currentY + dy[i]][currentX + dx[i]] == MazeSymbols.WALL.value) {
                         cantJumpNowhere = false;
                         break;
                     }
                 }
             }
-
             if (cantJumpNowhere) {
                 if (deletedWalls < wallsToDelete) {
                     setRandomCoordinates();
                 }
                 continue;
             }
-
             makeNewRandomStep();
-
         }
-
         return new Maze(maze);
+    }
 
+    private void clearMaze() {
+        for (int x = 0; x < maze[0].length; x++) {
+            for (int y = 0; y < maze.length; y++) {
+                maze[y][x] = MazeSymbols.WALL.value;
+            }
+        }
     }
 
     private void makeNewRandomStep() {
@@ -93,12 +85,12 @@ public class SimpleMazeGenerator implements MazeGenerator {
             dir = random.nextInt(0, dx.length);
             newX = currentX + dx[dir];
             newY = currentY + dy[dir];
-        } while (!pointIsInBounds(newX, newY) || maze[newY][newX] == MazeSymbols.SPACE.value());
+        } while (!pointIsInBounds(newX, newY) || maze[newY][newX] == MazeSymbols.SPACE.value);
 
         //making a way to (newX, newY)
-        maze[newY][newX] = MazeSymbols.SPACE.value();
+        maze[newY][newX] = MazeSymbols.SPACE.value;
         //deleting a wall at the point we just 'jumped over'
-        maze[newY - dy[dir] / 2][newX - dx[dir] / 2] = MazeSymbols.SPACE.value();
+        maze[newY - dy[dir] / 2][newX - dx[dir] / 2] = MazeSymbols.SPACE.value;
 
         currentX = newX;
         currentY = newY;
@@ -106,18 +98,18 @@ public class SimpleMazeGenerator implements MazeGenerator {
 
     private void setRandomCoordinates() {
         do {
-            currentX = random.nextInt(0, maze.length - 1);
-            currentX += (currentX % 2);
+            currentX = random.nextInt(0, maze[0].length / 2) * 2 + 1;
+            currentY = random.nextInt(0, maze.length / 2) * 2 + 1;
+        } while (maze[currentY][currentX] != MazeSymbols.WALL.value);
+    }
 
-            currentY = random.nextInt(0, maze.length - 1);
-            currentY += (currentY % 2);
-        } while (maze[currentY][currentX] != MazeSymbols.WALL.value());
-
+    public boolean validateMazeParameters(int height, int width) {
+        return height >= Maze.MIN_MAZE_HEIGHT
+            && width >= Maze.MIN_MAZE_WIDTH;
     }
 
     private boolean pointIsInBounds(int x, int y) {
-        return (x >= 0 && x < maze.length) && (y >= 0 && y < maze.length);
+        return (x >= 0 && x < maze[0].length) && (y >= 0 && y < maze.length);
     }
-
 }
 

@@ -1,18 +1,23 @@
 package mazegame.labyrinth.navigation;
 
-import backend.academy.mazegame.labyrinth.navigation.impl.SimpleMazePathFinder;
+import backend.academy.mazegame.labyrinth.navigation.NavigationAlgorithms;
+import backend.academy.mazegame.labyrinth.navigation.PathFinder;
 import backend.academy.mazegame.maze.Maze;
 import backend.academy.mazegame.maze.Point;
 import java.util.List;
 import java.util.Map;
 import org.apache.commons.collections.CollectionUtils;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.FieldSource;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class SimpleMazePathFinderTest {
-    @Test
-    public void getPathTest() {
+public class MazePathFinderTest {
+    final static NavigationAlgorithms[] algorithms = NavigationAlgorithms.values();
+
+    @ParameterizedTest
+    @FieldSource("algorithms")
+    public void getPathTest(NavigationAlgorithms algorithm) {
         /*
         |#| |#|
         |#| | |
@@ -23,7 +28,7 @@ public class SimpleMazePathFinderTest {
             new Point(2, 1), new Point(1, 1),
             new Point(1, 1), new Point(1, 0)
         );
-        SimpleMazePathFinder pathFinder = new SimpleMazePathFinder();
+        PathFinder pathFinder = algorithm.value;
         Point end = new Point(2, 2);
         List<Point> expected = List.of(new Point(2, 2), new Point(2, 1), new Point(1, 1), new Point(1, 0));
 
@@ -33,15 +38,16 @@ public class SimpleMazePathFinderTest {
 
     }
 
-    @Test
-    public void findPathOneWayTest() {
+    @ParameterizedTest
+    @FieldSource("algorithms")
+    public void findPathOneWayTest(NavigationAlgorithms algorithm) {
         Maze maze = new Maze(new char[][] {
             {'█', ' ', '█'},
             {'█', ' ', ' '},
             {'█', '█', ' '}
         });
 
-        SimpleMazePathFinder pathFinder = new SimpleMazePathFinder();
+        PathFinder pathFinder = algorithm.value;
         Point start = new Point(1, 0);
         Point end = new Point(2, 2);
         List<Point> expected = List.of(new Point(2, 2), new Point(2, 1), new Point(1, 1), new Point(1, 0));
@@ -52,15 +58,16 @@ public class SimpleMazePathFinderTest {
 
     }
 
-    @Test
-    public void findPathTwoWaysTest() {
+    @ParameterizedTest
+    @FieldSource("algorithms")
+    public void findPathTwoWaysTest(NavigationAlgorithms algorithm) {
         Maze maze = new Maze(new char[][] {
             {' ', ' ', ' '},
             {' ', '█', ' '},
             {' ', ' ', ' '}
         });
 
-        SimpleMazePathFinder pathFinder = new SimpleMazePathFinder();
+        PathFinder pathFinder = algorithm.value;
         Point start = new Point(0, 0);
         Point end = new Point(2, 2);
         List<Point> expected1 =
@@ -69,6 +76,7 @@ public class SimpleMazePathFinderTest {
             List.of(new Point(2, 2), new Point(2, 1), new Point(2, 0), new Point(1, 0), new Point(0, 0));
 
         List<Point> resultPath = pathFinder.findPath(start, end, maze);
+        System.out.println(algorithm + " " + resultPath);
 
         boolean isFirstWay = CollectionUtils.isEqualCollection(expected1, resultPath);
         boolean isSecondWay = CollectionUtils.isEqualCollection(expected2, resultPath);
@@ -77,15 +85,16 @@ public class SimpleMazePathFinderTest {
 
     }
 
-    @Test
-    public void findPathNoWaysTest() {
+    @ParameterizedTest
+    @FieldSource("algorithms")
+    public void findPathNoWaysTest(NavigationAlgorithms algorithm) {
         Maze maze = new Maze(new char[][] {
             {' ', '█', ' '},
             {'█', '█', ' '},
             {' ', ' ', ' '}
         });
 
-        SimpleMazePathFinder pathFinder = new SimpleMazePathFinder();
+        PathFinder pathFinder = algorithm.value;
         Point start = new Point(0, 0);
         Point end = new Point(2, 2);
 
@@ -95,15 +104,16 @@ public class SimpleMazePathFinderTest {
 
     }
 
-    @Test
-    public void findPathToItselfTest() {
+    @ParameterizedTest
+    @FieldSource("algorithms")
+    public void findPathToItselfTest(NavigationAlgorithms algorithm) {
         Maze maze = new Maze(new char[][] {
             {' ', '█', ' '},
             {'█', '█', ' '},
             {' ', ' ', ' '}
         });
 
-        SimpleMazePathFinder pathFinder = new SimpleMazePathFinder();
+        PathFinder pathFinder = algorithm.value;
         Point start = new Point(0, 0);
         Point end = new Point(0, 0);
 
@@ -111,7 +121,5 @@ public class SimpleMazePathFinderTest {
         List<Point> expected = List.of(new Point(0, 0));
 
         assertThat(resultPath).isEqualTo(expected);
-
     }
-
 }

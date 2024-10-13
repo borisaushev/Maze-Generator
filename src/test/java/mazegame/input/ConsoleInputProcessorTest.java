@@ -5,9 +5,9 @@ import backend.academy.mazegame.maze.Maze;
 import backend.academy.mazegame.maze.Point;
 import backend.academy.mazegame.parameters.GameParameters;
 import backend.academy.mazegame.parameters.GameState;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-import org.junit.jupiter.params.provider.ValueSource;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ConsoleInputProcessorTest {
@@ -17,9 +17,8 @@ public class ConsoleInputProcessorTest {
         {' ', ' ', ' '}
     });
 
-    @ParameterizedTest
-    @ValueSource(strings = {"0;0 2;2", "2;0 2;2", "0;0 0;0"})
-    public void parsePointsTest(String points) {
+    @Test
+    public void parsePointsTest() {
         ConsoleInputProcessor processor = new ConsoleInputProcessor();
         String point1String = "0;0 2;2";
         Point point1Start = new Point(0, 0);
@@ -59,5 +58,4 @@ public class ConsoleInputProcessorTest {
 
         assertEquals(expectedGameState, parameters.getState());
     }
-
 }

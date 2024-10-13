@@ -13,9 +13,9 @@ import static backend.academy.mazegame.parameters.MazeSymbols.WALL;
 /**
  * Finds a way from one <b>Point</b> to another
  */
-public class SimpleMazePathFinder implements PathFinder {
+public class BFSMazePathFinder implements PathFinder {
     /**
-     * Finds and returns a path between 2 given points in a given maze
+     * Finds and returns a path between 2 given points in a given maze using BFS algorithm
      *
      * @param startingPoint starting point
      * @param endingPoint   ending point, can equal to starting point
@@ -45,18 +45,16 @@ public class SimpleMazePathFinder implements PathFinder {
             int y = currentPoint.y();
             for (int i = 0; i < dx.length; i++) {
                 Point newPoint = new Point(x + dx[i], y + dy[i]);
-                if (pointIsInBounds(newPoint, maze)
+                if (maze.pointIsInBounds(newPoint)
                     && !visitedPoints.contains(newPoint)
-                    && maze.valueAt(newPoint) != WALL.value()) {
+                    && maze.valueAt(newPoint) != WALL.value) {
                     que.addLast(newPoint);
                     previousPoint.put(newPoint, currentPoint);
                     visitedPoints.add(newPoint);
                 }
             }
         }
-
         return List.of();
-
     }
 
     /**
@@ -75,14 +73,6 @@ public class SimpleMazePathFinder implements PathFinder {
             path.add(currentPoint);
             currentPoint = previousPoint.get(currentPoint);
         }
-
         return path;
     }
-
-    private boolean pointIsInBounds(Point point, Maze maze) {
-        int x = point.x();
-        int y = point.y();
-        return (x >= 0 && x < maze.maze().length) && (y >= 0 && y < maze.maze().length);
-    }
-
 }

@@ -19,7 +19,6 @@ import static backend.academy.mazegame.parameters.GameState.FINISH;
 @SuppressWarnings({"RegexpSinglelineJava", "MissingSwitchDefault"})
 @SuppressFBWarnings("CLI_CONSTANT_LIST_INDEX")
 public class ConsoleInputProcessor implements InputProcessor<String> {
-
     private final static String MENU_OPTIONS = """
         1. Изменить алгоритм генерации лабиринта
         2. Изменить алгоритм поиска пути
@@ -62,11 +61,15 @@ public class ConsoleInputProcessor implements InputProcessor<String> {
                 System.out.println(MENU_OPTIONS);
             }
             case GENERATE_MAZE -> {
-                generateMaze(input, parameters);
+                Maze maze = generateMaze(input, parameters);
+                printMaze(maze);
+                parameters.setMaze(maze);
+                parameters.setState(CHOOSE_MAIN_MENU_OPTION);
                 System.out.println(MENU_OPTIONS);
             }
             case FIND_PATH -> {
                 findPath(input, parameters);
+                parameters.setState(CHOOSE_MAIN_MENU_OPTION);
                 System.out.println(MENU_OPTIONS);
             }
             case FINISH -> parameters.setState(FINISH);
@@ -80,21 +83,22 @@ public class ConsoleInputProcessor implements InputProcessor<String> {
             case INVALID_INPUT -> throw new IllegalStateException("Error in program code, illegal type INVALID_INPUT");
             case CHANGE_GENERATING_ALGORITHM -> getAllGeneratingAlgorithmsWithDescriptions();
             case CHANGE_PATH_ALGORITHM -> getAllNavigationAlgorithmsWithDescriptions();
-            case GENERATE_MAZE -> "Введите размер лабиринта(одно число не меньше 3)";
+            case GENERATE_MAZE -> ("Введите высоту и ширину лабиринта(2 числа через пробел, "
+                + "высота не меньше %d ширина не меньше %d)").formatted(Maze.MIN_MAZE_HEIGHT, Maze.MIN_MAZE_WIDTH);
             case FIND_PATH -> "Введите координаты начальной и конечной точки в виде x1;y1 x2;y2";
-            case FINISH -> "ББ!";
+            case FINISH -> "Спасибо за игру!";
         };
     }
 
-    private void generateMaze(String input, GameParameters parameters) {
-        int length = getIntegerInput(input);
-        Maze maze = parameters.getGeneratorAlgorithm().generateMaze(length);
-        MazeRepresentation<String> representation = new SimpleMazeRepresentation();
-        String mazeRepresentation = representation.getMazeRepresentation(maze);
-        System.out.println(mazeRepresentation);
+    private Maze generateMaze(String input, GameParameters parameters) {
+        int height = getIntegerInput(input.split(" ")[0]);
+        int width = getIntegerInput(input.split(" ")[1]);
+        return parameters.getGeneratorAlgorithm().generateMaze(height, width);
+    }
 
-        parameters.setMaze(maze);
-        parameters.setState(CHOOSE_MAIN_MENU_OPTION);
+    private void printMaze(Maze maze) {
+        MazeRepresentation<String> representation = new SimpleMazeRepresentation();
+        System.out.println(representation.getMazeRepresentation(maze));
     }
 
     private void findPath(String input, GameParameters parameters) {
@@ -106,8 +110,6 @@ public class ConsoleInputProcessor implements InputProcessor<String> {
         List<Point> path = parameters.getPathAlgorithm().findPath(start, end, maze);
         MazeRepresentation<String> representation = new SimpleMazeRepresentation();
         System.out.println(representation.getMazeRepresentation(maze, path));
-
-        parameters.setState(CHOOSE_MAIN_MENU_OPTION);
     }
 
     public int getIntegerInput(String input) {
@@ -135,5 +137,4 @@ public class ConsoleInputProcessor implements InputProcessor<String> {
 
         return res;
     }
-
 }
