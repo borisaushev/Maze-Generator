@@ -9,10 +9,10 @@ import backend.academy.mazegame.parameters.GameParameters;
 import backend.academy.mazegame.parameters.GameState;
 
 public class MazeGameRunner<T> {
-    GameParameters parameters;
-    InputProcessor<T> inputProcessor;
-    InputValidator<T> inputValidator;
-    InputSource<T> inputSource;
+    public final GameParameters parameters;
+    public final InputProcessor<T> inputProcessor;
+    public final InputValidator<T> inputValidator;
+    public final InputSource<T> inputSource;
 
     public MazeGameRunner(
         InputSource<T> source,
