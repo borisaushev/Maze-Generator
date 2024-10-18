@@ -1,9 +1,8 @@
-package mazegame.labyrinth.generator;
+package backend.academy.mazegame.maze.generator;
 
-import backend.academy.mazegame.labyrinth.generator.GeneratingAlgorithms;
-import backend.academy.mazegame.labyrinth.generator.MazeGenerator;
 import backend.academy.mazegame.maze.Maze;
 import java.util.ArrayList;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.FieldSource;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -13,6 +12,7 @@ public class MazeGeneratorTest {
     final static GeneratingAlgorithms[] algorithms = GeneratingAlgorithms.values();
 
     @ParameterizedTest
+    @DisplayName("generating mazes")
     @FieldSource("algorithms")
     public void generateMazeValidParametersTest(GeneratingAlgorithms algorithm) {
         MazeGenerator generator = algorithm.value;
@@ -26,11 +26,12 @@ public class MazeGeneratorTest {
 
         results.forEach(m -> {
             assertNotNull(m);
-            assertNotNull(m.maze());
+            assertNotNull(m.mazeMatrix());
         });
     }
 
     @ParameterizedTest
+    @DisplayName("generating mazes with illegal parameters")
     @FieldSource("algorithms")
     public void generateMazeInvalidParametersTest(GeneratingAlgorithms algorithm) {
         MazeGenerator generator = algorithm.value;

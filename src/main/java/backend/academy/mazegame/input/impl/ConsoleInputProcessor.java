@@ -1,20 +1,20 @@
 package backend.academy.mazegame.input.impl;
 
 import backend.academy.mazegame.input.InputProcessor;
-import backend.academy.mazegame.labyrinth.generator.GeneratingAlgorithms;
-import backend.academy.mazegame.labyrinth.navigation.NavigationAlgorithms;
 import backend.academy.mazegame.maze.Maze;
 import backend.academy.mazegame.maze.Point;
-import backend.academy.mazegame.parameters.GameParameters;
-import backend.academy.mazegame.parameters.GameState;
+import backend.academy.mazegame.maze.generator.GeneratingAlgorithms;
+import backend.academy.mazegame.maze.navigation.NavigationAlgorithms;
+import backend.academy.mazegame.maze.parameters.GameParameters;
+import backend.academy.mazegame.maze.parameters.GameState;
 import backend.academy.mazegame.representation.MazeRepresentation;
 import backend.academy.mazegame.representation.impl.SimpleMazeRepresentation;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.util.List;
-import static backend.academy.mazegame.labyrinth.generator.GeneratingAlgorithms.getAllGeneratingAlgorithmsWithDescriptions;
-import static backend.academy.mazegame.labyrinth.navigation.NavigationAlgorithms.getAllNavigationAlgorithmsWithDescriptions;
-import static backend.academy.mazegame.parameters.GameState.CHOOSE_MAIN_MENU_OPTION;
-import static backend.academy.mazegame.parameters.GameState.FINISH;
+import static backend.academy.mazegame.maze.generator.GeneratingAlgorithms.getAllGeneratingAlgorithmsWithDescriptions;
+import static backend.academy.mazegame.maze.navigation.NavigationAlgorithms.getAllNavigationAlgorithmsWithDescriptions;
+import static backend.academy.mazegame.maze.parameters.GameState.CHOOSE_MAIN_MENU_OPTION;
+import static backend.academy.mazegame.maze.parameters.GameState.FINISH;
 
 @SuppressWarnings({"RegexpSinglelineJava", "MissingSwitchDefault"})
 @SuppressFBWarnings("CLI_CONSTANT_LIST_INDEX")
@@ -74,6 +74,11 @@ public class ConsoleInputProcessor implements InputProcessor<String> {
             }
             case FINISH -> parameters.setState(FINISH);
         }
+    }
+
+    @Override
+    public void greetUser() {
+        System.out.println(MENU_OPTIONS);
     }
 
     private String getAdditionalInputInfo(GameState newGameState) {

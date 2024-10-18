@@ -1,8 +1,8 @@
-package backend.academy.mazegame.parameters;
+package backend.academy.mazegame.maze.parameters;
 
-import backend.academy.mazegame.labyrinth.generator.MazeGenerator;
-import backend.academy.mazegame.labyrinth.navigation.PathFinder;
 import backend.academy.mazegame.maze.Maze;
+import backend.academy.mazegame.maze.generator.MazeGenerator;
+import backend.academy.mazegame.maze.navigation.PathFinder;
 
 /*
 For some reason @Getter and @Setter aren't working for me,

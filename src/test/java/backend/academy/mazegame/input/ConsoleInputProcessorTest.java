@@ -1,10 +1,11 @@
-package mazegame.input;
+package backend.academy.mazegame.input;
 
 import backend.academy.mazegame.input.impl.ConsoleInputProcessor;
 import backend.academy.mazegame.maze.Maze;
 import backend.academy.mazegame.maze.Point;
-import backend.academy.mazegame.parameters.GameParameters;
-import backend.academy.mazegame.parameters.GameState;
+import backend.academy.mazegame.maze.parameters.GameParameters;
+import backend.academy.mazegame.maze.parameters.GameState;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -18,6 +19,7 @@ public class ConsoleInputProcessorTest {
     });
 
     @Test
+    @DisplayName("Parsing points")
     public void parsePointsTest() {
         ConsoleInputProcessor processor = new ConsoleInputProcessor();
         String point1String = "0;0 2;2";
@@ -45,6 +47,7 @@ public class ConsoleInputProcessorTest {
     }
 
     @ParameterizedTest
+    @DisplayName("Processing input with parameters")
     @CsvSource({"1,CHOOSE_MAIN_MENU_OPTION,CHANGE_GENERATING_ALGORITHM",
         "1,CHANGE_PATH_ALGORITHM,CHOOSE_MAIN_MENU_OPTION",
         "5,CHOOSE_MAIN_MENU_OPTION,FINISH"})

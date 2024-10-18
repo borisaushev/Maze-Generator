@@ -1,12 +1,11 @@
-package mazegame.labyrinth.navigation;
+package backend.academy.mazegame.maze.navigation;
 
-import backend.academy.mazegame.labyrinth.navigation.NavigationAlgorithms;
-import backend.academy.mazegame.labyrinth.navigation.PathFinder;
 import backend.academy.mazegame.maze.Maze;
 import backend.academy.mazegame.maze.Point;
 import java.util.List;
 import java.util.Map;
 import org.apache.commons.collections.CollectionUtils;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.FieldSource;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -16,6 +15,7 @@ public class MazePathFinderTest {
     final static NavigationAlgorithms[] algorithms = NavigationAlgorithms.values();
 
     @ParameterizedTest
+    @DisplayName("backtrack testing")
     @FieldSource("algorithms")
     public void getPathTest(NavigationAlgorithms algorithm) {
         /*
@@ -39,6 +39,7 @@ public class MazePathFinderTest {
     }
 
     @ParameterizedTest
+    @DisplayName("Only one way")
     @FieldSource("algorithms")
     public void findPathOneWayTest(NavigationAlgorithms algorithm) {
         Maze maze = new Maze(new char[][] {
@@ -54,11 +55,12 @@ public class MazePathFinderTest {
 
         List<Point> resultPath = pathFinder.findPath(start, end, maze);
 
-        assertThat(expected).containsExactlyInAnyOrderElementsOf(resultPath);
+        assertThat(resultPath).containsExactlyInAnyOrderElementsOf(expected);
 
     }
 
     @ParameterizedTest
+    @DisplayName("Two possible ways")
     @FieldSource("algorithms")
     public void findPathTwoWaysTest(NavigationAlgorithms algorithm) {
         Maze maze = new Maze(new char[][] {
@@ -86,6 +88,7 @@ public class MazePathFinderTest {
     }
 
     @ParameterizedTest
+    @DisplayName("No possible ways")
     @FieldSource("algorithms")
     public void findPathNoWaysTest(NavigationAlgorithms algorithm) {
         Maze maze = new Maze(new char[][] {
@@ -105,6 +108,7 @@ public class MazePathFinderTest {
     }
 
     @ParameterizedTest
+    @DisplayName("Path from a point to itself")
     @FieldSource("algorithms")
     public void findPathToItselfTest(NavigationAlgorithms algorithm) {
         Maze maze = new Maze(new char[][] {

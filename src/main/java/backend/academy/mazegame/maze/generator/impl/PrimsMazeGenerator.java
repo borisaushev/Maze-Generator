@@ -1,9 +1,9 @@
-package backend.academy.mazegame.labyrinth.generator.impl;
+package backend.academy.mazegame.maze.generator.impl;
 
-import backend.academy.mazegame.labyrinth.generator.MazeGenerator;
 import backend.academy.mazegame.maze.Maze;
 import backend.academy.mazegame.maze.Point;
-import backend.academy.mazegame.parameters.MazeSymbols;
+import backend.academy.mazegame.maze.generator.MazeGenerator;
+import backend.academy.mazegame.maze.parameters.MazeSymbols;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -11,18 +11,21 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * Generates a labyrinth, with only walls and spaces using Prims Algorithm
- *
  * @see <a href="https://habr.com/ru/articles/537630/">source article</a>
  */
 @SuppressWarnings("MagicNumber")
 @SuppressFBWarnings({"PREDICTABLE_RANDOM", "PL_PARALLEL_LISTS", "CLI_CONSTANT_LIST_INDEX"})
 public class PrimsMazeGenerator implements MazeGenerator {
     private final Random random = new Random();
+    private static final int LEFT = -2;
+    private static final int RIGHT = 2;
+    private static final int DOWN = -2;
+    private static final int UP = 2;
+    private static final int NO_CHANGE = 0;
     //change of values of x and y when we go: left, right, up, down
-    private final int[] dx = {-2, 2, 0, 0};
-    private final int[] dy = {0, 0, 2, -2};
-    private char[][] maze;
+    private final int[] dx = {LEFT, RIGHT, NO_CHANGE, NO_CHANGE};
+    private final int[] dy = {NO_CHANGE, NO_CHANGE, UP, DOWN};
+    private char[][] mazeMatrix;
 
     /**
      * Generates a Maze object based on a given height and width
@@ -41,12 +44,12 @@ public class PrimsMazeGenerator implements MazeGenerator {
         // Create an array and add valid points that are two orthogonal spaces away from the point you just cleared.
         ArrayList<Point> availablePointsList = new ArrayList<>();
         HashSet<Point> visitedPoints = new HashSet<>();
-        maze = new char[height][width];
+        mazeMatrix = new char[height][width];
         clearMaze();
         // Choose a random point with odd x and y coordinates and clear it.
         int x = random.nextInt(0, width / 2) * 2 + 1;
         int y = random.nextInt(0, height / 2) * 2 + 1;
-        maze[y][x] = MazeSymbols.SPACE.value;
+        mazeMatrix[y][x] = MazeSymbols.SPACE.value;
         visitedPoints.add(new Point(x, y));
         addNearestPoints(x, y, visitedPoints, availablePointsList);
 
@@ -57,7 +60,7 @@ public class PrimsMazeGenerator implements MazeGenerator {
             Point point = availablePointsList.remove(index);
             x = point.x();
             y = point.y();
-            maze[y][x] = MazeSymbols.SPACE.value;
+            mazeMatrix[y][x] = MazeSymbols.SPACE.value;
             visitedPoints.add(point);
             // The point you just cleared needs to be connected with another clear point.
             connectNewPoint(x, y);
@@ -65,7 +68,7 @@ public class PrimsMazeGenerator implements MazeGenerator {
             addNearestPoints(x, y, visitedPoints, availablePointsList);
         }
 
-        return new Maze(maze);
+        return new Maze(mazeMatrix);
     }
 
     private void connectNewPoint(int x, int y) {
@@ -77,8 +80,8 @@ public class PrimsMazeGenerator implements MazeGenerator {
             int dirIndex = randomDeltaIndexes.get(randomDeltaIndex);
             int newX = x + dx[dirIndex];
             int newY = y + dy[dirIndex];
-            if (pointIsInBounds(newX, newY) && maze[newY][newX] == MazeSymbols.SPACE.value) {
-                maze[y + (dy[dirIndex] / 2)][x + (dx[dirIndex] / 2)] = MazeSymbols.SPACE.value;
+            if (pointIsInBounds(newX, newY) && mazeMatrix[newY][newX] == MazeSymbols.SPACE.value) {
+                mazeMatrix[y + (dy[dirIndex] / 2)][x + (dx[dirIndex] / 2)] = MazeSymbols.SPACE.value;
                 break;
             }
             randomDeltaIndexes.remove(randomDeltaIndex);
@@ -96,7 +99,7 @@ public class PrimsMazeGenerator implements MazeGenerator {
             int deltaY = dy[i];
             Point newPoint = new Point(x + deltaX, y + deltaY);
             if (pointIsInBounds(newPoint)
-                && maze[y + deltaY][x + deltaX] == MazeSymbols.WALL.value
+                && mazeMatrix[y + deltaY][x + deltaX] == MazeSymbols.WALL.value
                 && !visitedPoints.contains(newPoint)) {
                 availablePointsList.add(newPoint);
                 visitedPoints.add(newPoint);
@@ -105,20 +108,20 @@ public class PrimsMazeGenerator implements MazeGenerator {
     }
 
     private void clearMaze() {
-        for (int x = 0; x < maze[0].length; x++) {
-            for (int y = 0; y < maze.length; y++) {
-                maze[y][x] = MazeSymbols.WALL.value;
+        for (int x = 0; x < mazeMatrix[0].length; x++) {
+            for (int y = 0; y < mazeMatrix.length; y++) {
+                mazeMatrix[y][x] = MazeSymbols.WALL.value;
             }
         }
     }
 
-    public boolean validateMazeParameters(int height, int width) {
+    private boolean validateMazeParameters(int height, int width) {
         return height >= Maze.MIN_MAZE_HEIGHT
             && width >= Maze.MIN_MAZE_WIDTH;
     }
 
     private boolean pointIsInBounds(int x, int y) {
-        return (x >= 0 && x < maze[0].length) && (y >= 0 && y < maze.length);
+        return (x >= 0 && x < mazeMatrix[0].length) && (y >= 0 && y < mazeMatrix.length);
     }
 
     private boolean pointIsInBounds(Point point) {

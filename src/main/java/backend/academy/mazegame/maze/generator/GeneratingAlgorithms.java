@@ -1,7 +1,7 @@
-package backend.academy.mazegame.labyrinth.generator;
+package backend.academy.mazegame.maze.generator;
 
-import backend.academy.mazegame.labyrinth.generator.impl.PrimsMazeGenerator;
-import backend.academy.mazegame.labyrinth.generator.impl.SimpleMazeGenerator;
+import backend.academy.mazegame.maze.generator.impl.PrimsMazeGenerator;
+import backend.academy.mazegame.maze.generator.impl.SimpleMazeGenerator;
 import java.util.Map;
 
 public enum GeneratingAlgorithms {

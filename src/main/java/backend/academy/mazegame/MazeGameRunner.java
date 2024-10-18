@@ -3,10 +3,10 @@ package backend.academy.mazegame;
 import backend.academy.mazegame.input.InputProcessor;
 import backend.academy.mazegame.input.InputSource;
 import backend.academy.mazegame.input.InputValidator;
-import backend.academy.mazegame.labyrinth.generator.GeneratingAlgorithms;
-import backend.academy.mazegame.labyrinth.navigation.NavigationAlgorithms;
-import backend.academy.mazegame.parameters.GameParameters;
-import backend.academy.mazegame.parameters.GameState;
+import backend.academy.mazegame.maze.generator.GeneratingAlgorithms;
+import backend.academy.mazegame.maze.navigation.NavigationAlgorithms;
+import backend.academy.mazegame.maze.parameters.GameParameters;
+import backend.academy.mazegame.maze.parameters.GameState;
 
 public class MazeGameRunner<T> {
     public final GameParameters parameters;
@@ -29,6 +29,7 @@ public class MazeGameRunner<T> {
     }
 
     public void startGame() {
+        inputProcessor.greetUser();
         while (parameters.getState() != GameState.FINISH) {
             T input = inputSource.getNextInput();
             if (!inputValidator.inputIsValid(input, parameters)) {

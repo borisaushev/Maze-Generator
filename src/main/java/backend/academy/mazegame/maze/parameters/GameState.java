@@ -1,4 +1,4 @@
-package backend.academy.mazegame.parameters;
+package backend.academy.mazegame.maze.parameters;
 
 import java.util.Map;
 

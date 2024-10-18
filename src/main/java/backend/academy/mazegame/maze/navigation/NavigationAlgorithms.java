@@ -1,7 +1,7 @@
-package backend.academy.mazegame.labyrinth.navigation;
+package backend.academy.mazegame.maze.navigation;
 
-import backend.academy.mazegame.labyrinth.navigation.impl.BFSMazePathFinder;
-import backend.academy.mazegame.labyrinth.navigation.impl.DFSMazePathFinder;
+import backend.academy.mazegame.maze.navigation.impl.BFSMazePathFinder;
+import backend.academy.mazegame.maze.navigation.impl.DFSMazePathFinder;
 import java.util.Map;
 
 public enum NavigationAlgorithms {

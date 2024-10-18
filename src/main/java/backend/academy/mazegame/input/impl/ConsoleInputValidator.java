@@ -1,12 +1,12 @@
 package backend.academy.mazegame.input.impl;
 
 import backend.academy.mazegame.input.InputValidator;
-import backend.academy.mazegame.labyrinth.generator.GeneratingAlgorithms;
-import backend.academy.mazegame.labyrinth.navigation.NavigationAlgorithms;
 import backend.academy.mazegame.maze.Maze;
-import backend.academy.mazegame.parameters.GameParameters;
-import backend.academy.mazegame.parameters.GameState;
-import backend.academy.mazegame.parameters.MazeSymbols;
+import backend.academy.mazegame.maze.generator.GeneratingAlgorithms;
+import backend.academy.mazegame.maze.navigation.NavigationAlgorithms;
+import backend.academy.mazegame.maze.parameters.GameParameters;
+import backend.academy.mazegame.maze.parameters.GameState;
+import backend.academy.mazegame.maze.parameters.MazeSymbols;
 
 public class ConsoleInputValidator implements InputValidator<String> {
     @Override

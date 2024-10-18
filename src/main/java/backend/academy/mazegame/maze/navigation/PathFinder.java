@@ -1,4 +1,4 @@
-package backend.academy.mazegame.labyrinth.navigation;
+package backend.academy.mazegame.maze.navigation;
 
 import backend.academy.mazegame.maze.Maze;
 import backend.academy.mazegame.maze.Point;

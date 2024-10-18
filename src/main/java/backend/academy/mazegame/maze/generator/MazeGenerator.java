@@ -1,4 +1,4 @@
-package backend.academy.mazegame.labyrinth.generator;
+package backend.academy.mazegame.maze.generator;
 
 import backend.academy.mazegame.maze.Maze;
 
