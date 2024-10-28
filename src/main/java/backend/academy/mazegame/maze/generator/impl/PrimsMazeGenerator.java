@@ -11,17 +11,19 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * @see <a href="https://habr.com/ru/articles/537630/">source article</a>
+ * Generates a maze using Prims algorithm
+ *
+ * @see <a href="https://habr.com/ru/articles/537630/">
+ *     see this article for more information</a>
  */
-@SuppressWarnings("MagicNumber")
 @SuppressFBWarnings({"PREDICTABLE_RANDOM", "PL_PARALLEL_LISTS", "CLI_CONSTANT_LIST_INDEX"})
 public class PrimsMazeGenerator implements MazeGenerator {
-    private final Random random = new Random();
     private static final int LEFT = -2;
     private static final int RIGHT = 2;
     private static final int DOWN = -2;
     private static final int UP = 2;
     private static final int NO_CHANGE = 0;
+    private final Random random = new Random();
     //change of values of x and y when we go: left, right, up, down
     private final int[] dx = {LEFT, RIGHT, NO_CHANGE, NO_CHANGE};
     private final int[] dy = {NO_CHANGE, NO_CHANGE, UP, DOWN};
@@ -30,8 +32,8 @@ public class PrimsMazeGenerator implements MazeGenerator {
     /**
      * Generates a Maze object based on a given height and width
      *
-     * @param height > MIN_MAZE_HEIGHT height of a labyrinth
-     * @param width  > MIN_MAZE_WIDTH width of a labyrinth
+     * @param height >= MIN_MAZE_HEIGHT height of a labyrinth
+     * @param width  >= MIN_MAZE_WIDTH width of a labyrinth
      * @return Maze object
      * @throws IllegalArgumentException if <b>height or width</b> is less than MIN_MAZE_HEIGHT and MIN_MAZE_WIDTH
      */
@@ -74,7 +76,10 @@ public class PrimsMazeGenerator implements MazeGenerator {
     private void connectNewPoint(int x, int y) {
         // Look two orthogonal spaces away from the point you just cleared until you find one that is not a wall.
         // Clear the point between them.
-        List<Integer> randomDeltaIndexes = new ArrayList<>(List.of(0, 1, 2, 3));
+        List<Integer> randomDeltaIndexes = new ArrayList<>(dx.length);
+        for (int i = 0; i < dx.length; i++) {
+            randomDeltaIndexes.add(i);
+        }
         while (!randomDeltaIndexes.isEmpty()) {
             int randomDeltaIndex = random.nextInt(0, randomDeltaIndexes.size());
             int dirIndex = randomDeltaIndexes.get(randomDeltaIndex);

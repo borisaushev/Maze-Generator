@@ -20,8 +20,8 @@ public class MazeGameRunner<T> {
         InputProcessor<T> processor
     ) {
         parameters = new GameParameters();
-        parameters.setPathAlgorithm(NavigationAlgorithms.BFS_PATH_FINDER.value);
-        parameters.setGeneratorAlgorithm(GeneratingAlgorithms.PRIM_MAZE_GENERATOR.value);
+        parameters.setPathAlgorithm(NavigationAlgorithms.getDefaultAlgorithm().value);
+        parameters.setGeneratorAlgorithm(GeneratingAlgorithms.getDefaultAlgorithm().value);
         parameters.setState(GameState.CHOOSE_MAIN_MENU_OPTION);
         inputSource = source;
         inputValidator = validator;

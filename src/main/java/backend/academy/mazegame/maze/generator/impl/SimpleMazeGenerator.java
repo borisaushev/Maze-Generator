@@ -7,16 +7,18 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.util.Random;
 
 /**
- * @see <a href="https://www.google.com/amp/s/habr.com/ru/amp/publications/318530/">source article</a>
+ * Generates a simple labyrinth, with only walls and spaces
+ * @see <a href="https://www.google.com/amp/s/habr.com/ru/amp/publications/318530/">
+ *     see this article for more information</a>
  */
 @SuppressFBWarnings({"PREDICTABLE_RANDOM", "PL_PARALLEL_LISTS", "CLI_CONSTANT_LIST_INDEX"})
 public class SimpleMazeGenerator implements MazeGenerator {
-    private final Random random = new Random();
     private static final int LEFT = -2;
     private static final int RIGHT = 2;
     private static final int DOWN = -2;
     private static final int UP = 2;
     private static final int NO_CHANGE = 0;
+    private final Random random = new Random();
     //change of values of x and y when we go: left, right, up, down
     private final int[] dx = {LEFT, RIGHT, NO_CHANGE, NO_CHANGE};
     private final int[] dy = {NO_CHANGE, NO_CHANGE, UP, DOWN};
@@ -27,8 +29,8 @@ public class SimpleMazeGenerator implements MazeGenerator {
     /**
      * Generates a Maze object based on a given height and width
      *
-     * @param height > MIN_MAZE_HEIGHT height of a labyrinth
-     * @param width  > MIN_MAZE_WIDTH width of a labyrinth
+     * @param height >= MIN_MAZE_HEIGHT height of a labyrinth
+     * @param width  >= MIN_MAZE_WIDTH width of a labyrinth
      * @return Maze object
      * @throws IllegalArgumentException if <b>height or width</b> is less than MIN_MAZE_HEIGHT and MIN_MAZE_WIDTH
      */
@@ -115,4 +117,3 @@ public class SimpleMazeGenerator implements MazeGenerator {
         return (x >= 0 && x < mazeMatrix[0].length) && (y >= 0 && y < mazeMatrix.length);
     }
 }
-

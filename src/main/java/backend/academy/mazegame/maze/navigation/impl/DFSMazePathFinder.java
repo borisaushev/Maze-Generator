@@ -14,7 +14,7 @@ import static backend.academy.mazegame.maze.parameters.MazeSymbols.WALL;
 /**
  * Finds a way from one <b>Point</b> to another
  */
-@SuppressFBWarnings({"PL_PARALLEL_LISTS"})
+@SuppressFBWarnings("PL_PARALLEL_LISTS")
 public class DFSMazePathFinder implements PathFinder {
     private static final int LEFT = -1;
     private static final int RIGHT = 1;
@@ -33,7 +33,7 @@ public class DFSMazePathFinder implements PathFinder {
      *
      * @param startingPoint starting point
      * @param endingPoint   ending point, can equal to starting point
-     * @param maze          mazeMatrix
+     * @param maze          maze
      * @return <b>Empty List</b> if no path was found, otherwise returns list of all points in any order
      */
     @Override

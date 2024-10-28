@@ -13,7 +13,8 @@ public class ConsoleMazeGameStarter {
         InputSource<String> inputSource = new ConsoleInputSource();
         InputValidator<String> inputValidator = new ConsoleInputValidator();
         InputProcessor<String> inputProcessor = new ConsoleInputProcessor();
-        MazeGameRunner<String> mazeGameRunner = new MazeGameRunner<>(inputSource, inputValidator, inputProcessor);
+        MazeGameRunner<String> mazeGameRunner = new MazeGameRunner<>(
+            inputSource, inputValidator, inputProcessor);
         mazeGameRunner.startGame();
     }
 }

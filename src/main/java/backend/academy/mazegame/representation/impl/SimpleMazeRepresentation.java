@@ -4,7 +4,6 @@ import backend.academy.mazegame.maze.Maze;
 import backend.academy.mazegame.maze.Point;
 import backend.academy.mazegame.maze.parameters.MazeSymbols;
 import backend.academy.mazegame.representation.MazeRepresentation;
-import java.util.Arrays;
 import java.util.List;
 
 @SuppressWarnings("MultipleStringLiterals")
@@ -65,11 +64,13 @@ public class SimpleMazeRepresentation implements MazeRepresentation<String> {
             return "Пути не нашлось :(";
         }
 
-        char[][] mazeCopy = Arrays.copyOf(maze.mazeMatrix(), maze.mazeMatrix().length);
+        char[][] mazeCopy = new char[maze.height()][maze.width()];
         for (int y = 0; y < maze.height(); y++) {
             for (int x = 0; x < maze.width(); x++) {
                 if (path.contains(new Point(x, y))) {
                     mazeCopy[y][x] = MazeSymbols.PATH.value;
+                } else {
+                    mazeCopy[y][x] = maze.valueAt(x, y);
                 }
             }
         }

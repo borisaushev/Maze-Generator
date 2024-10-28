@@ -35,7 +35,6 @@ public class MazePathFinderTest {
         List<Point> resultPath = pathFinder.reconstructPath(end, previousPoint);
 
         assertThat(expected).containsExactlyInAnyOrderElementsOf(resultPath);
-
     }
 
     @ParameterizedTest
@@ -56,7 +55,6 @@ public class MazePathFinderTest {
         List<Point> resultPath = pathFinder.findPath(start, end, maze);
 
         assertThat(resultPath).containsExactlyInAnyOrderElementsOf(expected);
-
     }
 
     @ParameterizedTest
@@ -78,13 +76,11 @@ public class MazePathFinderTest {
             List.of(new Point(2, 2), new Point(2, 1), new Point(2, 0), new Point(1, 0), new Point(0, 0));
 
         List<Point> resultPath = pathFinder.findPath(start, end, maze);
-        System.out.println(algorithm + " " + resultPath);
 
         boolean isFirstWay = CollectionUtils.isEqualCollection(expected1, resultPath);
         boolean isSecondWay = CollectionUtils.isEqualCollection(expected2, resultPath);
 
         assertTrue(isFirstWay || isSecondWay);
-
     }
 
     @ParameterizedTest
@@ -104,7 +100,6 @@ public class MazePathFinderTest {
         List<Point> resultPath = pathFinder.findPath(start, end, maze);
 
         assertThat(resultPath).isEmpty();
-
     }
 
     @ParameterizedTest
